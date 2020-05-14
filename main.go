@@ -18,8 +18,13 @@ func main() {
 	app.Use(logger.New())
 	app.Use(recover.New())
 
+	app.HandleDir("/js", "./public/js")
+	app.HandleDir("/css", "./public/css")
 	app.Get("/", func(ctx iris.Context) {
-		ctx.WriteString("iris !")
+		index, _ := os.Open("./public/index.html")
+		s, _ := ioutil.ReadAll(index)
+		index.Close()
+		ctx.Write(s)
 	})
 
 	app.Get("/search", func(ctx iris.Context) {
