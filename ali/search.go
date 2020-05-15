@@ -11,6 +11,7 @@ import (
 )
 
 func SearchTaobaoShop(q string) (string, error) {
+	retry := 0
 	p := map[string]string{
 		"method":    "taobao.tbk.dg.material.optional",
 		"fields":    "user_id,shop_title,shop_type,seller_nick,pict_url,shop_url",
@@ -22,6 +23,8 @@ func SearchTaobaoShop(q string) (string, error) {
 	for k, v := range p {
 		form[k] = []string{v}
 	}
+
+REQUEST:
 	client := http.Client{
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			return http.ErrUseLastResponse
@@ -52,8 +55,15 @@ func SearchTaobaoShop(q string) (string, error) {
 		fmt.Printf("%s\n", ret.String())
 		return ret.String(), nil
 	}
+	ret = gjson.GetBytes(body, "error_response")
+	errMsg := ret.Value().(map[string]interface{})
+	if errMsg["code"].(int) == 15 && retry < 3 {
+		// 服务器错误，重试
+		retry++
+		goto REQUEST
+	}
 
-	return "", nil
+	return "", errors.New("SERVER ERROR")
 }
 
 func GetTaoBaoServerTime() {
