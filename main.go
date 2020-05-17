@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/middleware/logger"
 	"github.com/kataras/iris/v12/middleware/recover"
@@ -33,5 +34,5 @@ func main() {
 		ctx.WriteString(resp)
 	})
 
-	app.Run(iris.Addr(":8080"))
+	app.Run(iris.Addr(fmt.Sprintf(":%d", ali.HttpPort)))
 }

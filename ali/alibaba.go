@@ -13,6 +13,7 @@ import (
 
 var appkey = ""
 var secret = ""
+var HttpPort = 8080
 
 func init() {
 	var confYaml = "./config.yaml"
@@ -39,6 +40,10 @@ func init() {
 
 	if confMap["secret"] == nil || confMap["secret"] == "" {
 		log.Fatalln("config secret is empty")
+	}
+
+	if confMap["http_port"] != nil {
+		HttpPort = confMap["http_port"].(int)
 	}
 
 	appkey = fmt.Sprintf("%s", confMap["appkey"])
