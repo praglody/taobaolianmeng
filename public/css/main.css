@@ -1,15 +1,38 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+a, a:hover {
+    text-decoration: none;
+}
+
 .top-search {
     padding: 15px 15px 10px;
     background-color: #efefef;
 }
 
-.commodity-item {
+.top-search .search-group {
     position: relative;
-    padding-left: 90px;
-    margin-top: 12px;
+}
+
+.top-search .search-group .search-button {
+    position: absolute;
+    top: 0;
+    right: 2px;
+    display: block;
+    height: 40px;
+    width: 40px;
 }
 
 .commodity-list {
+    padding: 12px 15px 0;
+}
+
+.commodity-item {
+    position: relative;
+    padding-left: 90px;
+    margin-bottom: 12px;
 }
 
 .commodity-pic {
@@ -50,10 +73,6 @@
     color: #222222;
 }
 
-.commodity-content .comd-title a:hover {
-    text-decoration: none;
-}
-
 .commodity-content .comd-price {
     color: #f00;
 }
@@ -70,16 +89,7 @@
 .commodity-content .get-coupon {
     position: absolute;
     right: 0;
-    top: 48px;
-}
-
-.commodity-link {
-    display: block;
-    text-decoration: none;
-}
-
-.commodity-link:hover {
-    text-decoration: none;
+    top: 56px;
 }
 
 [v-cloak] {

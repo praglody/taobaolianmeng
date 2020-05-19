@@ -13,35 +13,32 @@
 </head>
 <body>
 <div id="main">
-    <el-row>
-        <el-col :span="24">
-            <div class="top-search">
-                <div class="" id="search_group">
-                    <el-input placeholder="在这里输入商品名进行搜索" suffix-icon="el-icon-search" v-model="search_input"
-                              v-on:keyup.enter="searchCommodity">
-                    </el-input>
-                    <a id="search_button" v-on:click="searchCommodity"></a>
-                </div>
+    <el-row class="top-search">
+        <el-col :span="24" :lg="{span:16,offset:4}">
+            <div class="search-group" id="search_group">
+                <el-input placeholder="在这里输入商品名进行搜索" suffix-icon="el-icon-search"
+                          v-model="search_input" @keyup.enter.native="searchCommodity">
+                </el-input>
+                <a id="search_button" class="search-button" v-on:click="searchCommodity"></a>
             </div>
         </el-col>
     </el-row>
 
     <el-row>
-        <el-col :span="24">
-            <div class="commodity-list" id="commodity_list">
-                <div class="commodity-item" v-for="item in items" v-cloak>
-                    <a class="commodity-pic" v-bind:href="item.url" target="_blank">
-                        <img v-bind:src="item.pict_url"/>
-                    </a>
-                    <div class="commodity-content">
-                        <p class="comd-title">
-                            <a v-bind:href="item.item_url" target="_blank">{{item.title}}</a>
-                        </p>
-                        <p class="comd-price"><span>￥{{item.reserve_price}}</span>￥{{item.zk_final_price}}</p>
-                        <p class="comd-coupon">优惠券：{{item.coupon_info}}</p>
-                        <a v-if="item.coupon_share_url" v-bind:href="item.coupon_share_url" target="_blank"
-                           class="btn btn-outline-secondary btn-sm get-coupon">领券</a>
-                    </div>
+        <el-col :span="24" :lg="{span:16,offset:4}" class="commodity-list" id="commodity_list">
+            <div class="commodity-item" v-for="item in items" v-cloak>
+                <a class="commodity-pic" v-bind:href="item.url" target="_blank">
+                    <img v-bind:src="item.pict_url"/>
+                </a>
+                <div class="commodity-content">
+                    <p class="comd-title">
+                        <a v-bind:href="item.item_url" target="_blank">{{item.title}}</a>
+                    </p>
+                    <p class="comd-price"><span>￥{{item.reserve_price}}</span>￥{{item.zk_final_price}}</p>
+                    <p class="comd-coupon">优惠券：{{item.coupon_info}}</p>
+                    <a class="el-button get-coupon el-button--default el-button--mini get-coupon" target="_blank"
+                       v-if="item.coupon_share_url"
+                       v-bind:href="item.coupon_share_url">领券</a>
                 </div>
             </div>
         </el-col>
