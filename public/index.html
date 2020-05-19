@@ -36,6 +36,7 @@
             </p>
             <p class="comd-price"><span>￥{{item.reserve_price}}</span>￥{{item.zk_final_price}}</p>
             <p class="comd-coupon">优惠券：{{item.coupon_info}}</p>
+            <a v-if="item.coupon_share_url" v-bind:href="item.coupon_share_url" target="_blank" class="btn btn-outline-secondary btn-sm get-coupon">领券</a>
         </div>
     </div>
 </div>

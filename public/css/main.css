@@ -26,6 +26,7 @@
 }
 
 .commodity-content {
+    position: relative;
     padding-left: 6px;
     height: 120px;
     font-size: 12px;
@@ -64,6 +65,12 @@
 
 .commodity-content .comd-coupon {
     color: #f00;
+}
+
+.commodity-content .get-coupon {
+    position: absolute;
+    right: 0;
+    top: 48px;
 }
 
 .commodity-link {
