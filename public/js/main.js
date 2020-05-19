@@ -1,5 +1,12 @@
 let commodity;
 (function () {
+    let main = new Vue({
+        el: "#main",
+        data: function() {
+            return { visible: false }
+        }
+    });
+
     commodity = new Vue({
         el: "#commodity_list",
         data: {
