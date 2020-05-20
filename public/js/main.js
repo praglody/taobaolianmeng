@@ -16,12 +16,15 @@
                         q: th.search_input
                     }
                 }).then(function (response) {
-                    for (let i in response.data) {
-                        if (response.data[i].coupon_info == "") {
-                            response.data[i].coupon_info = "无";
+                    if (response.data.code == 200) {
+                        let res = response.data.data.result;
+                        for (let i in res) {
+                            if (res[i].coupon_info == "") {
+                                res[i].coupon_info = "无";
+                            }
                         }
+                        th.items = res;
                     }
-                    th.items = response.data;
                 }).catch(function (error) {
                     console.log(error);
                 });

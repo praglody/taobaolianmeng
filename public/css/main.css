@@ -18,6 +18,10 @@ a, a:hover {
     box-shadow: none;
 }
 
+.top-search .search-group .search-input:focus + .search-button {
+    color: #999;
+}
+
 .top-search .search-group .search-button {
     position: absolute;
     top: 0;

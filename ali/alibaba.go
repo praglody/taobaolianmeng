@@ -65,7 +65,7 @@ func GenParameter(Param map[string]string) map[string]string {
 
 	var tmp = secret
 	for _, v := range keys {
-		tmp += v + Param[v]
+		tmp += v + fmt.Sprint(Param[v])
 	}
 	tmp += secret
 	Param["sign"] = fmt.Sprintf("%X", md5.Sum([]byte(tmp)))

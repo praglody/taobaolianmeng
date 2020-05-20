@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/json-iterator/go"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/middleware/logger"
 	"github.com/kataras/iris/v12/middleware/recover"
@@ -25,13 +26,75 @@ func main() {
 	})
 
 	app.Get("/search", func(ctx iris.Context) {
+		code := 200
 		q := ctx.URLParam("q")
-		resp, err := ali.SearchTaobaoShop(q)
-		if err != nil {
-			ctx.StatusCode(403)
-			return
+		p := ctx.URLParam("p")
+		if p == "" {
+			p = "0"
 		}
-		ctx.WriteString(resp)
+		resp, err := ali.SearchTaobaoShop(q, p)
+		if err != nil {
+			if err != nil {
+				code = 10005
+				resp = []interface{}{}
+			}
+		}
+
+		ctx.Header("Content-Type", "application/json; charset=utf-8")
+		retMsg := map[string]interface{}{
+			"code": code,
+			"data": map[string]interface{}{
+				"result": resp,
+			},
+		}
+
+		var json = jsoniter.ConfigCompatibleWithStandardLibrary
+		b, _ := json.Marshal(&retMsg)
+		ctx.Write(b)
+	})
+
+	app.Get("/item-info", func(ctx iris.Context) {
+		code := 200
+		itemId := ctx.URLParam("id")
+		ip := ctx.RemoteAddr()
+		resp, err := ali.GetItemInfo(itemId, ip)
+		if err != nil {
+			code = 10005
+			resp = map[string]string{}
+		}
+		ctx.Header("Content-Type", "application/json; charset=utf-8")
+		retMsg := map[string]interface{}{
+			"code": code,
+			"data": map[string]interface{}{
+				"result": resp,
+			},
+		}
+
+		var json = jsoniter.ConfigCompatibleWithStandardLibrary
+		b, _ := json.Marshal(&retMsg)
+		ctx.Write(b)
+	})
+
+	app.Get("/coupon-info", func(ctx iris.Context) {
+		code := 200
+		itemId := ctx.URLParam("id")
+		couponId := ctx.URLParam("coupon_id")
+		resp, err := ali.GetCouponInfo(itemId, couponId)
+		ctx.Header("Content-Type", "application/json; charset=utf-8")
+		if err != nil {
+			code = 10005
+			resp = map[string]string{}
+		}
+
+		retMsg := map[string]interface{}{
+			"code": code,
+			"data": map[string]interface{}{
+				"result": resp,
+			},
+		}
+		var json = jsoniter.ConfigCompatibleWithStandardLibrary
+		b, _ := json.Marshal(&retMsg)
+		ctx.Write(b)
 	})
 
 	app.Run(iris.Addr(fmt.Sprintf(":%d", ali.HttpPort)))
