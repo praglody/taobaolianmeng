@@ -1,64 +1,56 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.8/lib/index.css">
     <link rel="stylesheet" href="css/main.css">
-
     <title>Shopping</title>
 </head>
 <body>
 <div id="app">
-    <div class="container-fluid top-search">
-        <div class="container-lg search-group" id="search_group">
-            <div class="input-row">
-                <input type="text" id="search_input" class="form-control search-input" placeholder="在这里输入商品名进行搜索"
-                       v-model="search_input" v-on:keyup.enter="searchCommodity">
+    <div class="top-search" v-cloak>
+        <van-row>
+            <van-col span="24" type="flex" justify="center" class="search-group" id="search_group">
+                <div id="search_input" class="search-input">
+                    <van-search v-model="search_input"
+                                @search="searchCommodity"
+                                background="#efefef"
+                                placeholder="在这里输入商品名进行搜索">
+
+                    </van-search>
+                </div>
                 <a id="search_button" class="search-button" v-on:click="searchCommodity">
-                    <i class="fa fa-search fa-lg"></i>
                 </a>
-            </div>
-        </div>
+            </van-col>
+        </van-row>
     </div>
-    <div class="container-fluid loading" v-if="v_loading">
+
+    <div class="loading" v-if="v_loading" v-cloak>
         <van-loading size="24px" vertical>加载中...</van-loading>
     </div>
-    <div class="container commodity-list" id="commodity_list">
-        <div class="commodity-item" v-for="item in items" v-cloak>
-            <a class="commodity-pic" v-bind:href="item.url" target="_blank">
-                <img v-bind:src="item.pict_url"/>
-            </a>
-            <div class="commodity-content">
-                <p class="comd-title">
-                    <a v-bind:href="item.item_url" target="_blank">{{item.title}}</a>
-                </p>
-                <p class="comd-price"><span>￥{{item.reserve_price}}</span>￥{{item.zk_final_price}}</p>
-                <p class="comd-coupon">优惠券：{{item.coupon_info}}</p>
-                <a v-if="item.coupon_share_url" v-bind:href="item.coupon_share_url" target="_blank"
-                   class="btn btn-outline-secondary btn-sm get-coupon">领券</a>
+
+    <van-row>
+        <van-col span="24" type="flex" justify="center" class="commodity-list" id="commodity_list">
+            <div class="commodity-item" v-for="item in items" v-cloak>
+                <a class="commodity-pic" v-bind:href="item.url" target="_blank">
+                    <img v-bind:src="item.pict_url"/>
+                </a>
+                <div class="commodity-content">
+                    <p class="comd-title van-multi-ellipsis--l2">
+                        <a v-bind:href="item.item_url" target="_blank">{{item.title}}</a>
+                    </p>
+                    <p class="comd-price"><span>￥{{item.reserve_price}}</span>￥{{item.zk_final_price}}</p>
+                    <p class="comd-coupon">优惠券：{{item.coupon_info}}</p>
+                    <van-button type="default" tag="a" v-if="item.coupon_share_url" v-bind:href="item.coupon_share_url"
+                                target="_blank" class="get-coupon" size="mini">领券
+                    </van-button>
+                </div>
             </div>
-        </div>
-    </div>
+        </van-col>
+    </van-row>
 </div>
 
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<!--<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
-<!--
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script>
--->
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
 <script src="https://unpkg.com/axios@0.19.2/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vant@2.8/lib/vant.min.js"></script>

@@ -3,40 +3,34 @@ a, a:hover {
 }
 
 .top-search {
-    padding: 15px 0 10px;
-    background-color: #efefef;
 }
 
 .top-search .search-group {
 }
 
-.top-search .search-group .input-row {
-    position: relative;
+.top-search .search-group .van-field__left-icon {
+    position: absolute;
+    right: 12px;
+    margin: 0;
 }
 
-.top-search .search-group .search-input:focus {
-    box-shadow: none;
-}
-
-.top-search .search-group .search-input:focus + .search-button {
-    color: #999;
+.top-search .search-group .van-icon-clear {
+    display: none;
 }
 
 .top-search .search-group .search-button {
     position: absolute;
-    top: 0;
-    right: 2px;
+    top: 6px;
+    right: 8px;
     display: block;
     height: 40px;
-    width: 40px;
-    font-size: 12px;
-    line-height: 40px;
-    text-align: center;
-    color: #ccc;
+    width: 48px;
 }
 
 .loading {
     position: absolute;
+    left: 0;
+    right: 0;
     top: 80px;
     z-index: 999;
 }
@@ -73,16 +67,11 @@ a, a:hover {
 }
 
 .commodity-content p {
-    margin-bottom: 6px;
+    margin: 0 0 6px;
 }
 
 .commodity-content .comd-title {
     font-size: 14px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
 }
 
 .commodity-content .comd-title a {
