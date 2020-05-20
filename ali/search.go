@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"time"
 )
 
 func SearchTaobaoShop(q string) (string, error) {
@@ -45,21 +46,22 @@ REQUEST:
 
 	ret := gjson.GetBytes(body, "tbk_dg_material_optional_response.result_list.map_data")
 	if ret.IsArray() {
-		for _, v := range ret.Array() {
-			t := v.Value()
-			for key, value := range t.(map[string]interface{}) {
-				fmt.Println(key, ":", value)
-			}
-			break
-		}
-		fmt.Printf("%s\n", ret.String())
+		//for _, v := range ret.Array() {
+		//	t := v.Value()
+		//	for key, value := range t.(map[string]interface{}) {
+		//		fmt.Println(key, ":", value)
+		//	}
+		//	break
+		//}
+		//fmt.Printf("%s\n", ret.String())
 		return ret.String(), nil
 	}
 	ret = gjson.GetBytes(body, "error_response")
 	errMsg := ret.Value().(map[string]interface{})
-	if errMsg["code"].(int) == 15 && retry < 3 {
+	if errMsg["code"].(float64) == 15 && retry < 2 {
 		// 服务器错误，重试
 		retry++
+		time.Sleep(time.Millisecond * 500)
 		goto REQUEST
 	}
 
