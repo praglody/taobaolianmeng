@@ -1,19 +1,21 @@
-* {
-    padding: 0;
-    margin: 0;
-}
-
 a, a:hover {
     text-decoration: none;
 }
 
 .top-search {
-    padding: 15px 15px 10px;
+    padding: 15px 0 10px;
     background-color: #efefef;
 }
 
 .top-search .search-group {
+}
+
+.top-search .search-group .input-row {
     position: relative;
+}
+
+.top-search .search-group .search-input:focus {
+    box-shadow: none;
 }
 
 .top-search .search-group .search-button {
@@ -23,6 +25,10 @@ a, a:hover {
     display: block;
     height: 40px;
     width: 40px;
+    font-size: 12px;
+    line-height: 40px;
+    text-align: center;
+    color: #ccc;
 }
 
 .commodity-list {

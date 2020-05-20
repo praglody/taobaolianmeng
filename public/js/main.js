@@ -1,6 +1,6 @@
 (function () {
     let main = new Vue({
-        el: "#main",
+        el: "#app",
         data: function () {
             return {
                 items: [],
