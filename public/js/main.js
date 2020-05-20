@@ -1,16 +1,22 @@
+let main;
 (function () {
-    let main = new Vue({
+    main = new Vue({
         el: "#app",
         data: function () {
             return {
                 items: [],
                 visible: false,
-                search_input: ""
+                search_input: "",
+                v_loading: false
             }
         },
         methods: {
             searchCommodity: function (event) {
+                if (this.search_input == "") {
+                    return
+                }
                 let th = this;
+                th.v_loading = true;
                 axios.get('/search', {
                     params: {
                         q: th.search_input
@@ -27,8 +33,12 @@
                     }
                 }).catch(function (error) {
                     console.log(error);
+                }).finally(function () {
+                    th.v_loading = false;
                 });
             }
         }
     });
+
+    Vue.use(vant.Lazyload);
 })();

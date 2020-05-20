@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.8/lib/index.css">
     <link rel="stylesheet" href="css/main.css">
 
     <title>Shopping</title>
@@ -26,7 +27,9 @@
             </div>
         </div>
     </div>
-
+    <div class="container-fluid loading" v-if="v_loading">
+        <van-loading size="24px" vertical>加载中...</van-loading>
+    </div>
     <div class="container commodity-list" id="commodity_list">
         <div class="commodity-item" v-for="item in items" v-cloak>
             <a class="commodity-pic" v-bind:href="item.url" target="_blank">
@@ -58,6 +61,7 @@
 -->
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
 <script src="https://unpkg.com/axios@0.19.2/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vant@2.8/lib/vant.min.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

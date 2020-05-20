@@ -35,6 +35,12 @@ a, a:hover {
     color: #ccc;
 }
 
+.loading {
+    position: absolute;
+    top: 80px;
+    z-index: 999;
+}
+
 .commodity-list {
     padding: 12px 15px 0;
 }
