@@ -30,7 +30,8 @@
 
     <van-row>
         <van-col span="24" type="flex" justify="center" class="commodity-list" id="commodity_list">
-            <van-list v-model="items" :finished="finished" finished-text="没有更多了" @load="getMoreCommodity">
+            <van-list v-model="loading" :finished="finished" immediate-check="false" finished-text="没有更多了"
+                      @load="searchCommodity">
                 <div class="commodity-item" v-for="item in items" v-cloak>
                     <a class="commodity-pic" v-bind:href="item.url" target="_blank">
                         <img v-bind:src="item.pict_url"/>
@@ -44,7 +45,8 @@
                             <span class="use-coupon" v-if="item.use_coupon">券后：￥{{item.use_coupon}}</span>
                         </p>
                         <p class="comd-coupon">优惠券：{{item.coupon_info}}</p>
-                        <van-button type="default" tag="a" v-if="item.coupon_share_url" v-bind:href="item.coupon_share_url"
+                        <van-button type="default" tag="a" v-if="item.coupon_share_url"
+                                    v-bind:href="item.coupon_share_url"
                                     target="_blank" class="get-coupon" size="mini">领券
                         </van-button>
                     </div>

@@ -12,7 +12,7 @@ func SearchTaobaoShop(q string, page string) ([]interface{}, error) {
 		"fields":    "user_id,shop_title,shop_type,seller_nick,pict_url,shop_url",
 		"q":         q,
 		"page_no":   page,
-		"page_size": "30",
+		"page_size": "15",
 		"adzone_id": "110280650043",
 	}
 SearchRequest:
