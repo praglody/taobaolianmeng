@@ -159,6 +159,56 @@ CouponInfoRequest:
 	return map[string]string{}, nil
 }
 
+func GetShareKey(shareTitle, shareUrl string) (interface{}, error) {
+	retry := 0
+	p := map[string]string{
+		"method": "taobao.tbk.tpwd.create",
+		"url":    shareUrl,
+		"text":   shareTitle,
+	}
+	p = GenParameter(p)
+	form := url.Values{}
+	for k, v := range p {
+		form[k] = []string{v}
+	}
+
+ShareKeyRequest:
+	client := http.Client{
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			return http.ErrUseLastResponse
+		},
+	}
+	resp, err := client.PostForm("http://gw.api.taobao.com/router/rest", form)
+	if err != nil {
+		return nil, errors.New("request error")
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, errors.New("io error")
+	}
+	if err = resp.Body.Close(); err != nil {
+		return nil, err
+	}
+
+	fmt.Println(string(body))
+
+	ret := gjson.GetBytes(body, "tbk_tpwd_create_response.data")
+	if ret.Exists() {
+		t := ret.Value().(map[string]interface{})
+		return t, nil
+	}
+	ret = gjson.GetBytes(body, "error_response")
+	errMsg := ret.Value().(map[string]interface{})
+	if errMsg["sub_code"].(string) == "1" && retry < 2 {
+		// 服务器错误，重试
+		retry++
+		time.Sleep(time.Millisecond * 500)
+		goto ShareKeyRequest
+	}
+
+	return map[string]string{}, nil
+}
+
 func GetTaoBaoServerTime() {
 	p := map[string]string{
 		"method": "taobao.time.get",

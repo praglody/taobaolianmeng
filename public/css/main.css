@@ -8,10 +8,15 @@ a, a:hover {
 .top-search .search-group {
 }
 
+.search-input .van-search__content {
+    background-color: #fff;
+}
+
 .top-search .search-group .van-field__left-icon {
     position: absolute;
     right: 12px;
     margin: 0;
+    color: #c8c9cc;
 }
 
 .top-search .search-group .van-icon-clear {
