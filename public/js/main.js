@@ -15,11 +15,12 @@ let main;
         },
         methods: {
             searchCommodity: function (event) {
+                let th = this;
                 if (this.search_input == "") {
-                    this.loading = false;
+                    th.loading = false;
                     return
                 }
-                let th = this;
+
                 let isInit = true;
                 th.loading = true;
                 if (th.last_search_input == th.search_input) {
@@ -28,6 +29,7 @@ let main;
                 } else {
                     th.last_search_input = th.search_input;
                     th.page = 1;
+                    th.items = [];
                 }
                 axios.get('/search', {
                     params: {
