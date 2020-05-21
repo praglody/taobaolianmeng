@@ -1,47 +1,23 @@
 package ali
 
 import (
-	"errors"
 	"fmt"
 	"github.com/tidwall/gjson"
-	"io/ioutil"
-	"net/http"
-	"net/url"
-	"os"
 	"time"
 )
 
 func SearchTaobaoShop(q string, page string) ([]interface{}, error) {
 	retry := 0
 	p := map[string]string{
-		"method":    "taobao.tbk.dg.material.optional",
 		"fields":    "user_id,shop_title,shop_type,seller_nick,pict_url,shop_url",
 		"q":         q,
 		"page_no":   page,
 		"page_size": "30",
 		"adzone_id": "110280650043",
 	}
-	p = GenParameter(p)
-	form := url.Values{}
-	for k, v := range p {
-		form[k] = []string{v}
-	}
-
 SearchRequest:
-	client := http.Client{
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			return http.ErrUseLastResponse
-		},
-	}
-	resp, err := client.PostForm("http://gw.api.taobao.com/router/rest", form)
+	body, err := SendRequest("taobao.tbk.dg.material.optional", p)
 	if err != nil {
-		return nil, errors.New("request error")
-	}
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, errors.New("io error")
-	}
-	if err = resp.Body.Close(); err != nil {
 		return nil, err
 	}
 
@@ -64,31 +40,13 @@ SearchRequest:
 func GetItemInfo(itemId, ip string) (interface{}, error) {
 	retry := 0
 	p := map[string]string{
-		"method":   "taobao.tbk.item.info.get",
 		"num_iids": itemId,
 		"ip":       ip,
 	}
-	p = GenParameter(p)
-	form := url.Values{}
-	for k, v := range p {
-		form[k] = []string{v}
-	}
 
 ItemInfoRequest:
-	client := http.Client{
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			return http.ErrUseLastResponse
-		},
-	}
-	resp, err := client.PostForm("http://gw.api.taobao.com/router/rest", form)
+	body, err := SendRequest("taobao.tbk.item.info.get", p)
 	if err != nil {
-		return nil, errors.New("request error")
-	}
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, errors.New("io error")
-	}
-	if err = resp.Body.Close(); err != nil {
 		return nil, err
 	}
 
@@ -112,31 +70,13 @@ ItemInfoRequest:
 func GetCouponInfo(itemId, couponId string) (interface{}, error) {
 	retry := 0
 	p := map[string]string{
-		"method":      "taobao.tbk.coupon.get",
 		"item_id":     itemId,
 		"activity_id": couponId,
 	}
-	p = GenParameter(p)
-	form := url.Values{}
-	for k, v := range p {
-		form[k] = []string{v}
-	}
 
 CouponInfoRequest:
-	client := http.Client{
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			return http.ErrUseLastResponse
-		},
-	}
-	resp, err := client.PostForm("http://gw.api.taobao.com/router/rest", form)
+	body, err := SendRequest("taobao.tbk.coupon.get", p)
 	if err != nil {
-		return nil, errors.New("request error")
-	}
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, errors.New("io error")
-	}
-	if err = resp.Body.Close(); err != nil {
 		return nil, err
 	}
 
@@ -162,31 +102,13 @@ CouponInfoRequest:
 func GetShareKey(shareTitle, shareUrl string) (interface{}, error) {
 	retry := 0
 	p := map[string]string{
-		"method": "taobao.tbk.tpwd.create",
-		"url":    shareUrl,
-		"text":   shareTitle,
-	}
-	p = GenParameter(p)
-	form := url.Values{}
-	for k, v := range p {
-		form[k] = []string{v}
+		"url":  shareUrl,
+		"text": shareTitle,
 	}
 
 ShareKeyRequest:
-	client := http.Client{
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			return http.ErrUseLastResponse
-		},
-	}
-	resp, err := client.PostForm("http://gw.api.taobao.com/router/rest", form)
+	body, err := SendRequest("taobao.tbk.coupon.get", p)
 	if err != nil {
-		return nil, errors.New("request error")
-	}
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, errors.New("io error")
-	}
-	if err = resp.Body.Close(); err != nil {
 		return nil, err
 	}
 
@@ -209,36 +131,11 @@ ShareKeyRequest:
 	return map[string]string{}, nil
 }
 
-func GetTaoBaoServerTime() {
-	p := map[string]string{
-		"method": "taobao.time.get",
-	}
-	p = GenParameter(p)
-	form := url.Values{}
-	for k, v := range p {
-		form[k] = []string{v}
-	}
-	client := http.Client{
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			return http.ErrUseLastResponse
-		},
-	}
-	resp, err := client.PostForm("http://gw.api.taobao.com/router/rest", form)
+func GetTaoBaoServerTime() (string, error) {
+	p := map[string]string{}
+	body, err := SendRequest("taobao.time.get", p)
 	if err != nil {
-		fmt.Println(err.Error())
-		os.Exit(1)
+		return "", err
 	}
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println(err.Error())
-		os.Exit(1)
-	}
-	resp.Body.Close()
-	for k, v := range p {
-		fmt.Println(k, v)
-	}
-
-	fmt.Println(resp.StatusCode)
-	fmt.Println(resp.Request.URL)
-	fmt.Println(string(body))
+	return string(body), nil
 }

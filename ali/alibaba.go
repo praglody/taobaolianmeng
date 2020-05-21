@@ -2,10 +2,13 @@ package ali
 
 import (
 	"crypto/md5"
+	"errors"
 	"fmt"
 	yaml "gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
+	"net/http"
+	"net/url"
 	"os"
 	"sort"
 	"time"
@@ -70,4 +73,32 @@ func GenParameter(Param map[string]string) map[string]string {
 	tmp += secret
 	Param["sign"] = fmt.Sprintf("%X", md5.Sum([]byte(tmp)))
 	return Param
+}
+
+func SendRequest(method string, p map[string]string) ([]byte, error) {
+	p["method"] = method
+	p = GenParameter(p)
+
+	form := url.Values{}
+	for k, v := range p {
+		form[k] = []string{v}
+	}
+
+	client := http.Client{
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			return http.ErrUseLastResponse
+		},
+	}
+	resp, err := client.PostForm("http://gw.api.taobao.com/router/rest", form)
+	if err != nil {
+		return nil, errors.New("request error")
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+		return nil, errors.New("io error")
+	}
+
+	return body, nil
 }
