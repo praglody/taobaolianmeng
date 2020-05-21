@@ -5,9 +5,10 @@ let main;
         data: function () {
             return {
                 items: [],
-                visible: false,
                 search_input: "",
-                v_loading: false
+                v_loading: false,
+                finished: false,
+                loading: false
             }
         },
         methods: {
@@ -27,7 +28,11 @@ let main;
                         for (let i in res) {
                             if (res[i].coupon_info == "") {
                                 res[i].coupon_info = "无";
+                            }else{
+                                res[i].use_coupon = res[i].zk_final_price - res[i].coupon_amount
+                                res[i].use_coupon = res[i].use_coupon.toFixed(2);
                             }
+                            console.log(res[i])
                         }
                         th.items = res;
                     }
@@ -36,6 +41,11 @@ let main;
                 }).finally(function () {
                     th.v_loading = false;
                 });
+            },
+            getMoreCommodity: function () {
+                let th = this;
+                console.log("fadsfas")
+                th.loading = false;
             }
         }
     });

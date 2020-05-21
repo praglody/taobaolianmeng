@@ -30,21 +30,26 @@
 
     <van-row>
         <van-col span="24" type="flex" justify="center" class="commodity-list" id="commodity_list">
-            <div class="commodity-item" v-for="item in items" v-cloak>
-                <a class="commodity-pic" v-bind:href="item.url" target="_blank">
-                    <img v-bind:src="item.pict_url"/>
-                </a>
-                <div class="commodity-content">
-                    <p class="comd-title van-multi-ellipsis--l2">
-                        <a v-bind:href="item.item_url" target="_blank">{{item.title}}</a>
-                    </p>
-                    <p class="comd-price"><span>￥{{item.reserve_price}}</span>￥{{item.zk_final_price}}</p>
-                    <p class="comd-coupon">优惠券：{{item.coupon_info}}</p>
-                    <van-button type="default" tag="a" v-if="item.coupon_share_url" v-bind:href="item.coupon_share_url"
-                                target="_blank" class="get-coupon" size="mini">领券
-                    </van-button>
+            <van-list v-model="items" :finished="finished" finished-text="没有更多了" @load="getMoreCommodity">
+                <div class="commodity-item" v-for="item in items" v-cloak>
+                    <a class="commodity-pic" v-bind:href="item.url" target="_blank">
+                        <img v-bind:src="item.pict_url"/>
+                    </a>
+                    <div class="commodity-content">
+                        <p class="comd-title van-multi-ellipsis--l2">
+                            <a v-bind:href="item.item_url" target="_blank">{{item.title}}</a>
+                        </p>
+                        <p class="comd-price">
+                            <span class="original-cost">售价：￥{{item.zk_final_price}}</span>
+                            <span class="use-coupon" v-if="item.use_coupon">券后：￥{{item.use_coupon}}</span>
+                        </p>
+                        <p class="comd-coupon">优惠券：{{item.coupon_info}}</p>
+                        <van-button type="default" tag="a" v-if="item.coupon_share_url" v-bind:href="item.coupon_share_url"
+                                    target="_blank" class="get-coupon" size="mini">领券
+                        </van-button>
+                    </div>
                 </div>
-            </div>
+            </van-list>
         </van-col>
     </van-row>
 </div>
