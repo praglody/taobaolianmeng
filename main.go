@@ -97,5 +97,27 @@ func main() {
 		ctx.Write(b)
 	})
 
+	app.Get("/recommend", func(ctx iris.Context) {
+		code := 200
+		page := ctx.URLParam("page")
+		pageSize := ctx.URLParam("page_size")
+		resp, err := ali.GetRecommendList(page, pageSize)
+		ctx.Header("Content-Type", "application/json; charset=utf-8")
+		if err != nil {
+			code = 10005
+			resp = map[string]string{}
+		}
+
+		retMsg := map[string]interface{}{
+			"code": code,
+			"data": map[string]interface{}{
+				"result": resp,
+			},
+		}
+		var json = jsoniter.ConfigCompatibleWithStandardLibrary
+		b, _ := json.Marshal(&retMsg)
+		ctx.Write(b)
+	})
+
 	app.Run(iris.Addr(fmt.Sprintf(":%d", ali.HttpPort)))
 }

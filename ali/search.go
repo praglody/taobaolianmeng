@@ -131,6 +131,46 @@ ShareKeyRequest:
 	return map[string]string{}, nil
 }
 
+func GetRecommendList(page, pageSize string) (interface{}, error) {
+	retry := 0
+	if pageSize == "" {
+		pageSize = "30"
+	}
+	if page == "" {
+		page = "1"
+	}
+	p := map[string]string{
+		"adzone_id":   "110280650043",
+		"material_id": "13366",
+		"page_no":     page,
+		"page_size":   pageSize,
+	}
+
+RecommendListRequest:
+	body, err := SendRequest("taobao.tbk.dg.optimus.material", p)
+	if err != nil {
+		return nil, err
+	}
+
+	fmt.Println(string(body))
+
+	ret := gjson.GetBytes(body, "tbk_dg_optimus_material_response.result_list.map_data")
+	if ret.IsArray() {
+		return ret.Value().([]interface{}), nil
+	}
+
+	ret = gjson.GetBytes(body, "error_response")
+	errMsg := ret.Value().(map[string]interface{})
+	if errMsg["sub_code"].(string) == "40001" && retry < 2 {
+		// 服务器错误，重试
+		retry++
+		time.Sleep(time.Millisecond * 500)
+		goto RecommendListRequest
+	}
+
+	return map[string]string{}, nil
+}
+
 func GetTaoBaoServerTime() (string, error) {
 	p := map[string]string{}
 	body, err := SendRequest("taobao.time.get", p)
