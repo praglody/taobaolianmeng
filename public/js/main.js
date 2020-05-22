@@ -94,6 +94,14 @@
                     if (data.length > 0) {
                         th.recommendPage++;
                     }
+                    for (let i in data) {
+                        if (data[i].coupon_info == "") {
+                            data[i].coupon_info = "无";
+                        } else {
+                            data[i].use_coupon = data[i].zk_final_price - data[i].coupon_amount
+                            data[i].use_coupon = data[i].use_coupon.toFixed(2);
+                        }
+                    }
                     th.recommendItems = th.recommendItems.concat(data);
                 }).catch(function (err) {
 

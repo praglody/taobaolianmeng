@@ -56,7 +56,7 @@
 
     <van-row v-if="recommend">
         <van-col span="24" type="flex" justify="center" class="commodity-list recommend-list" id="commodity_list">
-            <van-divider>为您推荐商品</van-divider>
+            <van-divider>为您推荐</van-divider>
             <van-list v-model="recommendLoading" :finished="recommendFinished" immediate-check="false"
                       finished-text="没有更多了"
                       @load="getRecommendList">
