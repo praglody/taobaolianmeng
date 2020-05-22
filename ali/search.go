@@ -1,6 +1,7 @@
 package ali
 
 import (
+	"errors"
 	"fmt"
 	"github.com/tidwall/gjson"
 	"time"
@@ -101,13 +102,18 @@ CouponInfoRequest:
 
 func GetShareKey(shareTitle, shareUrl string) (interface{}, error) {
 	retry := 0
+
+	if shareTitle == "" || shareUrl == "" {
+		return nil, errors.New("param error")
+	}
+
 	p := map[string]string{
 		"url":  shareUrl,
 		"text": shareTitle,
 	}
 
 ShareKeyRequest:
-	body, err := SendRequest("taobao.tbk.coupon.get", p)
+	body, err := SendRequest("taobao.tbk.tpwd.create", p)
 	if err != nil {
 		return nil, err
 	}

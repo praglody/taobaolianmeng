@@ -24,11 +24,11 @@
         </van-row>
     </div>
 
-    <van-row v-if="searchList">
+    <van-row v-if="searchList" v-cloak>
         <van-col span="24" type="flex" justify="center" class="commodity-list" id="commodity_list">
             <van-list v-model="loading" :finished="finished" immediate-check="false" finished-text="没有更多了"
                       @load="listCommodity">
-                <div v-for="item in items" v-cloak>
+                <div v-for="item in items">
                     <div class="commodity-item">
                         <a class="commodity-pic" v-bind:href="item.url" target="_blank">
                             <img v-bind:src="item.pict_url"/>
@@ -54,7 +54,7 @@
         </van-col>
     </van-row>
 
-    <van-row v-if="recommend">
+    <van-row v-if="recommend" v-cloak>
         <van-col span="24" type="flex" justify="center" class="commodity-list recommend-list" id="commodity_list">
             <van-divider>为您推荐</van-divider>
             <van-list v-model="recommendLoading" :finished="recommendFinished" immediate-check="false"
@@ -75,7 +75,8 @@
                             </p>
                             <p class="comd-coupon">优惠券：{{item.coupon_info}}</p>
                             <van-button type="default" tag="a" v-if="item.coupon_share_url"
-                                        v-bind:href="item.coupon_share_url"
+                                        :share-url="item.coupon_share_url"
+                                        :share-title="item.title"
                                         target="_blank" class="get-coupon" size="mini">领券
                             </van-button>
                         </div>
@@ -90,6 +91,7 @@
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
 <script src="https://unpkg.com/axios@0.19.2/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vant@2.8/lib/vant.min.js"></script>
+<script src="https://unpkg.com/clipboard@2.0.6/dist/clipboard.min.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

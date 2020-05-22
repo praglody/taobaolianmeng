@@ -119,5 +119,44 @@ func main() {
 		ctx.Write(b)
 	})
 
+	// 生成口令
+	app.Post("/get-share-key", func(ctx iris.Context) {
+		type KeyParam struct {
+			Title string `json:"title"`
+			Url   string `json:"url"`
+		}
+		code := 200
+		retMsg := map[string]interface{}{}
+		body, _ := ctx.GetBody()
+		var pJson KeyParam
+		err := ctx.ReadJSON(&pJson)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		fmt.Println(string(body))
+		fmt.Println(pJson)
+		shareTitle := ctx.PostValue("title")
+		shareUrl := ctx.PostValue("url")
+		resp, err := ali.GetShareKey(shareTitle, shareUrl)
+		ctx.Header("Content-Type", "application/json; charset=utf-8")
+		if err != nil {
+			retMsg = map[string]interface{}{
+				"code":   10005,
+				"errMsg": err.Error(),
+			}
+		} else {
+			retMsg = map[string]interface{}{
+				"code": code,
+				"data": map[string]interface{}{
+					"result": resp,
+				},
+			}
+		}
+
+		var json = jsoniter.ConfigCompatibleWithStandardLibrary
+		b, _ := json.Marshal(&retMsg)
+		ctx.Write(b)
+	})
+
 	app.Run(iris.Addr(fmt.Sprintf(":%d", ali.HttpPort)))
 }

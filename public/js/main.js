@@ -118,4 +118,25 @@
     });
 
     Vue.use(vant.Lazyload);
+
+    new ClipboardJS('.get-coupon', {
+        text: function (trigger) {
+            let url = "https:" + trigger.getAttribute("share-url");
+            let title = trigger.getAttribute("share-title")
+
+            axios.post('/get-share-key', {
+                title: title,
+                url: url
+            }).then(function (resp) {
+                console.log(resp.data)
+            }).catch(function (err) {
+                console.log(err)
+            }).finally(function () {
+                setTimeout(function () {
+                }, 1500);
+            });
+
+            return "https:" + trigger.getAttribute("share-url");
+        }
+    });
 })();
