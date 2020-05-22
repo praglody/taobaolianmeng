@@ -95,18 +95,23 @@
                         th.recommendPage++;
                     }
                     for (let i in data) {
-                        if (data[i].coupon_info == "") {
+                        if (data[i].coupon_amount == undefined || data[i].coupon_amount == 0) {
                             data[i].coupon_info = "无";
                         } else {
+                            data[i].coupon_info = "满 " + data[i].coupon_start_fee + " 元减 "
+                                + data[i].coupon_amount + " 元";
                             data[i].use_coupon = data[i].zk_final_price - data[i].coupon_amount
                             data[i].use_coupon = data[i].use_coupon.toFixed(2);
                         }
                     }
                     th.recommendItems = th.recommendItems.concat(data);
-                }).catch(function (err) {
 
+                }).catch(function (err) {
+                    console.log(err)
                 }).finally(function () {
-                    th.recommendLoading = false;
+                    setTimeout(function () {
+                        th.recommendLoading = false;
+                    }, 1500);
                 });
             }
         }
