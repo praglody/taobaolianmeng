@@ -32,14 +32,6 @@ a, a:hover {
     width: 48px;
 }
 
-.loading {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 80px;
-    z-index: 999;
-}
-
 .commodity-list {
     padding: 12px 15px 0;
 }

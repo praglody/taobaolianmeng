@@ -3,13 +3,18 @@
         el: "#app",
         data: function () {
             return {
+                searchList: false,
+                loading: false,
+                finished: false,
                 items: [],
                 search_input: "",
                 last_search_input: "",
                 page: 1,
-                v_loading: false,
-                finished: false,
-                loading: false,
+                recommend: true,
+                recommendPage: 1,
+                recommendItems: [],
+                recommendLoading: false,
+                recommendFinished: false,
             }
         },
         methods: {
@@ -22,6 +27,11 @@
                 if (this.search_input == "") {
                     th.loading = false;
                     return
+                }
+
+                if (th.recommend == true) {
+                    th.recommend = false;
+                    th.searchList = true;
                 }
 
                 let isInit = true;
@@ -63,7 +73,6 @@
                         } else {
                             th.items = th.items.concat(res);
                         }
-
                     }
                 }).catch(function (error) {
                     console.log(error);
@@ -71,6 +80,25 @@
                     setTimeout(function () {
                         th.loading = false;
                     }, 1500);
+                });
+            },
+            getRecommendList: function () {
+                let th = this;
+                axios.get('/recommend', {
+                    params: {
+                        page: th.recommendPage,
+                        page_size: 20
+                    }
+                }).then(function (resp) {
+                    let data = resp.data.data.result;
+                    if (data.length > 0) {
+                        th.recommendPage++;
+                    }
+                    th.recommendItems = th.recommendItems.concat(data);
+                }).catch(function (err) {
+
+                }).finally(function () {
+                    th.recommendLoading = false;
                 });
             }
         }
