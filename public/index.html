@@ -31,7 +31,7 @@
     <van-row>
         <van-col span="24" type="flex" justify="center" class="commodity-list" id="commodity_list">
             <van-list v-model="loading" :finished="finished" immediate-check="false" finished-text="没有更多了"
-                      @load="searchCommodity">
+                      @load="listCommodity">
                 <div v-for="item in items" v-cloak>
                     <div class="commodity-item">
                         <a class="commodity-pic" v-bind:href="item.url" target="_blank">

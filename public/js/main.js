@@ -1,6 +1,5 @@
-let main;
 (function () {
-    main = new Vue({
+    let main = new Vue({
         el: "#app",
         data: function () {
             return {
@@ -14,7 +13,11 @@ let main;
             }
         },
         methods: {
-            searchCommodity: function (event) {
+            searchCommodity: function () {
+                this.last_search_input = "";
+                this.listCommodity();
+            },
+            listCommodity: function () {
                 let th = this;
                 if (this.search_input == "") {
                     th.loading = false;
