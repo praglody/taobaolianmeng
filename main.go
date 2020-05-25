@@ -135,9 +135,8 @@ func main() {
 			share.Url = ""
 		}
 
-		//resp, err := ali.GetShareKey(share.Title, share.Url)
 		// {"code":200,"data":{"result":{"model":"￥JbMZ1JpQ3Rq￥"}}}
-		resp, err := map[string]string{"model": "￥JbMZ1JpQ3Rq￥"}, nil
+		resp, err := ali.GetShareKey(share.Title, share.Url)
 		ctx.Header("Content-Type", "application/json; charset=utf-8")
 		if err != nil {
 			retMsg = map[string]interface{}{

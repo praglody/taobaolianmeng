@@ -1,6 +1,7 @@
 package ali
 
 import (
+	"crypto/md5"
 	"errors"
 	"fmt"
 	"github.com/tidwall/gjson"
@@ -114,6 +115,12 @@ func GetShareKey(shareTitle, shareUrl string) (interface{}, error) {
 		"text": shareTitle,
 	}
 
+	cacheKey := fmt.Sprintf("%X", md5.Sum([]byte("url"+p["url"]+"text"+p["text"])))
+	shareKey, err := cache.Get(cacheKey)
+	if err == nil {
+		return map[string]string{"model": string(shareKey)}, nil
+	}
+
 ShareKeyRequest:
 	body, err := SendRequest("taobao.tbk.tpwd.create", p)
 	if err != nil {
@@ -125,6 +132,7 @@ ShareKeyRequest:
 	ret := gjson.GetBytes(body, "tbk_tpwd_create_response.data")
 	if ret.Exists() {
 		t := ret.Value().(map[string]interface{})
+		_ = cache.Set(cacheKey, []byte(t["model"].(string)))
 		return t, nil
 	}
 	ret = gjson.GetBytes(body, "error_response")

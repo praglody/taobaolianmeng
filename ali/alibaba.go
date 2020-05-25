@@ -4,6 +4,7 @@ import (
 	"crypto/md5"
 	"errors"
 	"fmt"
+	"github.com/allegro/bigcache/v2"
 	yaml "gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
@@ -17,6 +18,7 @@ import (
 var appkey = ""
 var secret = ""
 var HttpPort = 8080
+var cache *bigcache.BigCache
 
 func init() {
 	var confYaml = "./config.yaml"
@@ -51,6 +53,8 @@ func init() {
 
 	appkey = fmt.Sprintf("%s", confMap["appkey"])
 	secret = fmt.Sprintf("%s", confMap["secret"])
+
+	cache, _ = bigcache.NewBigCache(bigcache.DefaultConfig(60 * time.Minute))
 }
 
 func GenParameter(Param map[string]string) map[string]string {
