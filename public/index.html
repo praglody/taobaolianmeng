@@ -44,6 +44,7 @@
                             <p class="comd-coupon">优惠券：{{item.coupon_info}}</p>
                             <van-button type="default" tag="a" v-if="item.coupon_share_url"
                                         :item-id="item.item_id"
+                                        @click="copyShareKey"
                                         target="_blank" class="get-coupon" size="mini">领券
                             </van-button>
                         </div>
@@ -76,6 +77,7 @@
                             <p class="comd-coupon">优惠券：{{item.coupon_info}}</p>
                             <van-button type="default" tag="a" v-if="item.coupon_share_url"
                                         :item-id="item.item_id"
+                                        @click="copyShareKey"
                                         target="_blank" class="get-coupon" size="mini">领券
                             </van-button>
                         </div>
@@ -86,7 +88,7 @@
         </van-col>
     </van-row>
 </div>
-
+<button id="copy" style="display: none"></button>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
 <script src="https://unpkg.com/axios@0.19.2/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vant@2.8/lib/vant.min.js"></script>

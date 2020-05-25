@@ -15,6 +15,7 @@
                 recommendItems: [],
                 recommendLoading: false,
                 recommendFinished: false,
+                shareKey: "",
             }
         },
         methods: {
@@ -113,53 +114,56 @@
                         th.recommendLoading = false;
                     }, 1500);
                 });
+            },
+            copyShareKey: function (e) {
+                let th = this;
+                let itemId = e.target.getAttribute("item-id");
+
+                for (let i in app.items) {
+                    console.log(app.items[i])
+                    if (app.items[i].item_id == itemId) {
+                        commodity = app.items[i];
+                    }
+                }
+
+                for (let i in app.recommendItems) {
+                    console.log(app.recommendItems[i])
+                    if (app.recommendItems[i].item_id == itemId) {
+                        commodity = app.recommendItems[i];
+                    }
+                }
+
+                if (commodity.item_id == undefined || commodity.item_id == null) {
+                    return;
+                }
+
+                let title = commodity.title;
+                let url = "https:" + commodity.coupon_share_url;
+
+                // axios.post('/get-share-key', {
+                //     title: title,
+                //     url: url
+                // }).then(function (resp) {
+                //     console.log(resp.data)
+                // }).catch(function (err) {
+                //     console.log(err)
+                // }).finally(function () {
+                //     setTimeout(function () {
+                //     }, 1500);
+                // });
+
+                vant.Toast.success('优惠券已赋值到剪贴板，打开淘宝APP即可领取');
+
+                th.shareKey = "shareKey";
             }
         }
     });
 
     Vue.use(vant.Lazyload);
 
-    new ClipboardJS('.get-coupon', {
+    new ClipboardJS('#copy', {
         text: function (trigger) {
-            let itemId = trigger.getAttribute("item-id")
-            let commodity = {}
-
-            for (let i in app.items) {
-                console.log(app.items[i])
-                if (app.items[i].item_id == itemId) {
-                    commodity = app.items[i];
-                }
-            }
-
-
-            for (let i in app.recommendItems) {
-                console.log(app.recommendItems[i])
-                if (app.recommendItems[i].item_id == itemId) {
-                    commodity = app.recommendItems[i];
-                }
-            }
-
-            if (commodity.item_id == undefined || commodity.item_id == null) {
-                return;
-            }
-
-            let title = commodity.title;
-            let url = "https:" + commodity.coupon_share_url;
-
-            // axios.post('/get-share-key', {
-            //     title: title,
-            //     url: url
-            // }).then(function (resp) {
-            //     console.log(resp.data)
-            // }).catch(function (err) {
-            //     console.log(err)
-            // }).finally(function () {
-            //     setTimeout(function () {
-            //     }, 1500);
-            // });
-
-            vant.Toast.success('优惠券已赋值到剪贴板，打开淘宝APP即可领取');
-            return url;
+            return app.shareKey;
         }
     });
 })();
