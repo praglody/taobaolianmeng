@@ -32,7 +32,7 @@ func main() {
 		if p == "" {
 			p = "0"
 		}
-		resp, err := ali.SearchTaobaoShop(q, p)
+		resp, err := ali.SearchTaobaoShop(q, p, ctx.RemoteAddr())
 		if err != nil {
 			if err != nil {
 				code = 10005
@@ -125,19 +125,19 @@ func main() {
 			Title string `json:"title"`
 			Url   string `json:"url"`
 		}
+
 		code := 200
 		retMsg := map[string]interface{}{}
-		body, _ := ctx.GetBody()
-		var pJson KeyParam
-		err := ctx.ReadJSON(&pJson)
+		var share KeyParam
+		err := ctx.ReadJSON(&share)
 		if err != nil {
-			fmt.Println(err.Error())
+			share.Title = ""
+			share.Url = ""
 		}
-		fmt.Println(string(body))
-		fmt.Println(pJson)
-		shareTitle := ctx.PostValue("title")
-		shareUrl := ctx.PostValue("url")
-		resp, err := ali.GetShareKey(shareTitle, shareUrl)
+
+		//resp, err := ali.GetShareKey(share.Title, share.Url)
+		// {"code":200,"data":{"result":{"model":"￥JbMZ1JpQ3Rq￥"}}}
+		resp, err := map[string]string{"model": "￥JbMZ1JpQ3Rq￥"}, nil
 		ctx.Header("Content-Type", "application/json; charset=utf-8")
 		if err != nil {
 			retMsg = map[string]interface{}{

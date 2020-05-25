@@ -7,14 +7,16 @@ import (
 	"time"
 )
 
-func SearchTaobaoShop(q string, page string) ([]interface{}, error) {
+func SearchTaobaoShop(q string, page string, ip string) ([]interface{}, error) {
 	retry := 0
 	p := map[string]string{
-		"fields":    "user_id,shop_title,shop_type,seller_nick,pict_url,shop_url",
-		"q":         q,
-		"page_no":   page,
-		"page_size": "15",
-		"adzone_id": "110280650043",
+		"fields":      "user_id,shop_title,shop_type,seller_nick,pict_url,shop_url",
+		"q":           q,
+		"page_no":     page,
+		"page_size":   "15",
+		"adzone_id":   "110280650043",
+		"material_id": "17004",
+		"ip":          ip,
 	}
 SearchRequest:
 	body, err := SendRequest("taobao.tbk.dg.material.optional", p)
@@ -134,7 +136,7 @@ ShareKeyRequest:
 		goto ShareKeyRequest
 	}
 
-	return map[string]string{}, nil
+	return nil, errors.New(errMsg["sub_msg"].(string))
 }
 
 func GetRecommendList(page, pageSize string) (interface{}, error) {
