@@ -120,14 +120,12 @@
                 let itemId = e.target.getAttribute("item-id");
 
                 for (let i in app.items) {
-                    console.log(app.items[i])
                     if (app.items[i].item_id == itemId) {
                         commodity = app.items[i];
                     }
                 }
 
                 for (let i in app.recommendItems) {
-                    console.log(app.recommendItems[i])
                     if (app.recommendItems[i].item_id == itemId) {
                         commodity = app.recommendItems[i];
                     }
@@ -140,21 +138,22 @@
                 let title = commodity.title;
                 let url = "https:" + commodity.coupon_share_url;
 
-                // axios.post('/get-share-key', {
-                //     title: title,
-                //     url: url
-                // }).then(function (resp) {
-                //     console.log(resp.data)
-                // }).catch(function (err) {
-                //     console.log(err)
-                // }).finally(function () {
-                //     setTimeout(function () {
-                //     }, 1500);
-                // });
-
-                vant.Toast.success('优惠券已赋值到剪贴板，打开淘宝APP即可领取');
-
-                th.shareKey = "shareKey";
+                axios.post('/get-share-key', {
+                    title: title,
+                    url: url
+                }).then(function (resp) {
+                    if (resp.data.code == 200) {
+                        let key = resp.data.data.result.model;
+                        th.shareKey = key;
+                        vant.Toast.success('优惠券已复制到剪贴板，打开淘宝APP即可领取');
+                        document.getElementById("copy").click();
+                    } else {
+                        vant.Toast.success('领取失败');
+                    }
+                }).catch(function (err) {
+                    console.log(err)
+                    vant.Toast.success('领取失败');
+                });
             }
         }
     });
@@ -162,7 +161,7 @@
     Vue.use(vant.Lazyload);
 
     new ClipboardJS('#copy', {
-        text: function (trigger) {
+        text: function () {
             return app.shareKey;
         }
     });
