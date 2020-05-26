@@ -5,11 +5,48 @@ import (
 	"errors"
 	"fmt"
 	"github.com/tidwall/gjson"
+	"regexp"
+	"strings"
 	"time"
 )
 
 func SearchTaobaoShop(q string, page string, ip string) ([]interface{}, error) {
 	retry := 0
+
+	if len(q) == 0 {
+		return nil, errors.New("keyword is empty")
+	}
+
+	re := regexp.MustCompile("【.*?】")
+	find := re.FindString(q)
+	if len(find) > 0 {
+		find = strings.Trim(find, "【】")
+		lindex := strings.Index(find, ":")
+		if lindex != -1 {
+			lindex++
+			find = find[lindex:]
+		}
+		lindex = strings.Index(find, "：")
+		if lindex != -1 {
+			lindex++
+			find = find[lindex:]
+		}
+		lindex = strings.Index(find, "(")
+		if lindex != -1 {
+			find = find[0:lindex]
+		}
+		lindex = strings.Index(find, "（")
+		if lindex != -1 {
+			find = find[0:lindex]
+		}
+
+		q = find
+	}
+
+	if len(q) > 0 {
+		return nil, errors.New("keyword is empty")
+	}
+
 	p := map[string]string{
 		"fields":      "user_id,shop_title,shop_type,seller_nick,pict_url,shop_url",
 		"q":           q,
