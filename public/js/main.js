@@ -1,4 +1,9 @@
 (function () {
+
+    function parsePrice(num) {
+        return (Math.round(num * 100) / 100).toFixed(2);
+    }
+
     let app = new Vue({
         el: "#app",
         data: function () {
@@ -65,9 +70,9 @@
                             if (res[i].coupon_info == "") {
                                 res[i].coupon_info = "无";
                             } else {
-                                res[i].use_coupon = res[i].zk_final_price - res[i].coupon_amount
-                                res[i].use_coupon = res[i].use_coupon.toFixed(2);
+                                res[i].use_coupon = parsePrice(res[i].zk_final_price - res[i].coupon_amount);
                             }
+                            res[i].zk_final_price = parsePrice(res[i].zk_final_price);
                         }
                         if (isInit) {
                             th.items = res;
@@ -96,29 +101,36 @@
                         page_size: 20
                     }
                 }).then(function (resp) {
-                    let data = resp.data.data.result;
-                    if (data.length > 0) {
-                        th.recommendPage++;
-                    }
-                    for (let i in data) {
-                        if (data[i].coupon_amount == undefined || data[i].coupon_amount == 0) {
-                            data[i].coupon_info = "无";
-                        } else {
-                            data[i].coupon_info = "满 " + data[i].coupon_start_fee + " 元减 "
-                                + data[i].coupon_amount + " 元";
-                            data[i].use_coupon = data[i].zk_final_price - data[i].coupon_amount
-                            data[i].use_coupon = data[i].use_coupon.toFixed(2);
+                    if (resp.data.code == 200) {
+                        let data = resp.data.data.result;
+                        if (data.length > 0) {
+                            th.recommendPage++;
                         }
-                        data[i].item_url = data[i].click_url;
-                    }
-                    th.recommendItems = th.recommendItems.concat(data);
+                        for (let i in data) {
+                            data[i].zk_final_price = parsePrice(data[i].zk_final_price);
+                            if (data[i].coupon_amount == undefined || data[i].coupon_amount == 0) {
+                                data[i].coupon_info = "无";
+                            } else {
+                                data[i].coupon_info = "满 " + parsePrice(data[i].coupon_start_fee) + " 元减 "
+                                    + parsePrice(data[i].coupon_amount) + " 元";
+                                data[i].use_coupon = parsePrice(data[i].zk_final_price - data[i].coupon_amount);
+                            }
+                            data[i].item_url = data[i].click_url;
+                        }
+                        th.recommendItems = th.recommendItems.concat(data);
 
-                }).catch(function (err) {
-                    console.log(err)
-                }).finally(function () {
-                    setTimeout(function () {
+                        setTimeout(function () {
+                            th.recommendLoading = false;
+                            th.recommendFinished = false;
+                        }, 1500);
+                    } else {
                         th.recommendLoading = false;
-                    }, 1500);
+                        th.recommendFinished = true;
+                    }
+                }).catch(function (err) {
+                    console.log(err);
+                    th.recommendLoading = false;
+                    th.recommendFinished = true;
                 });
             },
             copyShareKey: function (e) {
@@ -150,7 +162,7 @@
                 }).then(function (resp) {
                     if (resp.data.code == 200) {
                         let key = resp.data.data.result.model;
-                        th.shareKey = title + "\n【在售价】" + commodity.zk_final_price + "元\n【券后价】"
+                        th.shareKey = title + "\n【在售价】" + parsePrice(commodity.zk_final_price) + "元\n【券后价】"
                             + commodity.use_coupon + "元\n-----------------\n" +
                             "注意，请完整复制这条信息，" + key + "，到【手机淘宝】即可查看";
                         document.getElementById("copy").click();
