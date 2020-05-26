@@ -19,6 +19,7 @@ var appkey = ""
 var secret = ""
 var HttpPort = 8080
 var cache *bigcache.BigCache
+var Debug = false
 
 func init() {
 	var confYaml = "./config.yaml"
@@ -49,6 +50,10 @@ func init() {
 
 	if confMap["http_port"] != nil {
 		HttpPort = confMap["http_port"].(int)
+	}
+
+	if confMap["debug"] != nil {
+		Debug = confMap["debug"].(bool)
 	}
 
 	appkey = fmt.Sprintf("%s", confMap["appkey"])

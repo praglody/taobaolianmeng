@@ -109,6 +109,7 @@
                             data[i].use_coupon = data[i].zk_final_price - data[i].coupon_amount
                             data[i].use_coupon = data[i].use_coupon.toFixed(2);
                         }
+                        data[i].item_url = data[i].click_url;
                     }
                     th.recommendItems = th.recommendItems.concat(data);
 
@@ -149,8 +150,9 @@
                 }).then(function (resp) {
                     if (resp.data.code == 200) {
                         let key = resp.data.data.result.model;
-                        th.shareKey = key;
-                        vant.Toast.success('优惠券已复制到剪贴板，打开淘宝APP即可领取');
+                        th.shareKey = title + "\n【在售价】" + commodity.zk_final_price + "元\n【券后价】"
+                            + commodity.use_coupon + "元\n-----------------\n" +
+                            "注意，请完整复制这条信息，" + key + "，到【手机淘宝】即可查看";
                         document.getElementById("copy").click();
                     } else {
                         vant.Toast.success('领取失败');
@@ -165,9 +167,17 @@
 
     Vue.use(vant.Lazyload);
 
-    new ClipboardJS('#copy', {
+    let clipboard = new ClipboardJS('#copy', {
         text: function () {
             return app.shareKey;
         }
+    });
+
+    clipboard.on('success', function (e) {
+        vant.Toast.success('优惠券已复制到剪贴板，打开淘宝APP即可领取');
+    });
+
+    clipboard.on('error', function (e) {
+        vant.Toast.success('领取失败');
     });
 })();

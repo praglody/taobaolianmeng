@@ -1,3 +1,4 @@
 appkey: ""
 secret: ""
+debug: false
 http_port: 8080s

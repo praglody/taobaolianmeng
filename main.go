@@ -136,8 +136,13 @@ func main() {
 		}
 
 		// {"code":200,"data":{"result":{"model":"￥JbMZ1JpQ3Rq￥"}}}
-		//resp, err := map[string]string{"model": "￥JbMZ1JpQ3Rq￥"}, nil
-		resp, err := ali.GetShareKey(share.Title, share.Url)
+		var resp interface{}
+		if ali.Debug != true {
+			resp, err = ali.GetShareKey(share.Title, share.Url)
+		} else {
+			resp, err = map[string]string{"model": "￥JbMZ1JpQ3Rq￥"}, nil
+		}
+
 		ctx.Header("Content-Type", "application/json; charset=utf-8")
 		if err != nil {
 			retMsg = map[string]interface{}{
