@@ -74,14 +74,19 @@
                         } else {
                             th.items = th.items.concat(res);
                         }
+
+                        setTimeout(function () {
+                            th.loading = false;
+                        }, 1500);
+                    } else {
+                        th.finished = true;
+                        th.loading = false;
                     }
                 }).catch(function (error) {
                     console.log(error);
-                }).finally(function () {
-                    setTimeout(function () {
-                        th.loading = false;
-                    }, 1500);
-                });
+                    th.finished = true;
+                    th.loading = false;
+                })
             },
             getRecommendList: function () {
                 let th = this;

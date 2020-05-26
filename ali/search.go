@@ -98,6 +98,7 @@ ItemInfoRequest:
 	}
 	ret = gjson.GetBytes(body, "error_response")
 	errMsg := ret.Value().(map[string]interface{})
+	fmt.Println(string(body))
 	if errMsg["code"].(float64) == 15 && errMsg["sub_code"].(string) != "50001" && retry < 2 {
 		// 服务器错误，重试
 		retry++
