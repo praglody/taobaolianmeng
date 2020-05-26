@@ -43,10 +43,6 @@ func SearchTaobaoShop(q string, page string, ip string) ([]interface{}, error) {
 		q = find
 	}
 
-	if len(q) > 0 {
-		return nil, errors.New("keyword is empty")
-	}
-
 	p := map[string]string{
 		"fields":      "user_id,shop_title,shop_type,seller_nick,pict_url,shop_url",
 		"q":           q,
@@ -68,6 +64,7 @@ SearchRequest:
 	}
 	ret = gjson.GetBytes(body, "error_response")
 	errMsg := ret.Value().(map[string]interface{})
+	fmt.Println(string(body))
 	if errMsg["code"].(float64) == 15 && retry < 2 {
 		// 服务器错误，重试
 		retry++
@@ -206,8 +203,6 @@ RecommendListRequest:
 		return nil, err
 	}
 
-	fmt.Println(string(body))
-
 	ret := gjson.GetBytes(body, "tbk_dg_optimus_material_response.result_list.map_data")
 	if ret.IsArray() {
 		return ret.Value().([]interface{}), nil
@@ -215,6 +210,7 @@ RecommendListRequest:
 
 	ret = gjson.GetBytes(body, "error_response")
 	errMsg := ret.Value().(map[string]interface{})
+	fmt.Println(string(body))
 	if errMsg["sub_code"].(string) == "40001" && retry < 2 {
 		// 服务器错误，重试
 		retry++
