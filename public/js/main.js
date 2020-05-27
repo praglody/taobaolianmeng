@@ -63,6 +63,8 @@
                             if (th.page < 1) {
                                 th.page = 1;
                             }
+                            th.finished = true;
+                            th.loading = false;
                             return;
                         }
 
@@ -103,9 +105,13 @@
                 }).then(function (resp) {
                     if (resp.data.code == 200) {
                         let data = resp.data.data.result;
-                        if (data.length > 0) {
-                            th.recommendPage++;
+                        if (data.length < 1) {
+                            th.recommendLoading = false;
+                            th.recommendFinished = true;
+                            return;
                         }
+
+                        th.recommendPage++;
                         for (let i in data) {
                             data[i].zk_final_price = parsePrice(data[i].zk_final_price);
                             if (data[i].coupon_amount == undefined || data[i].coupon_amount == 0) {
