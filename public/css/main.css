@@ -93,12 +93,14 @@ a, a:hover {
     right: 0;
     top: 56px;
     border: 1px solid #f24d0c;
+    min-width: 36px;
 }
 
 .commodity-content .purchase {
     position: absolute;
     right: 0;
     top: 56px;
+    min-width: 36px;
 }
 
 [v-cloak] {
