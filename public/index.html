@@ -31,7 +31,7 @@
                 <div v-for="item in items">
                     <div class="commodity-item">
                         <a class="commodity-pic" :href="item.url" target="_blank">
-                            <img :src="item.pict_url"/>
+                            <img v-lazy="item.pict_url"/>
                         </a>
                         <div class="commodity-content">
                             <p class="comd-title van-multi-ellipsis--l2">
@@ -71,7 +71,7 @@
                 <div v-for="item in recommendItems" v-cloak>
                     <div class="commodity-item">
                         <a class="commodity-pic" :href="item.item_url" target="_blank">
-                            <img :src="item.pict_url"/>
+                            <img v-lazy="item.pict_url"/>
                         </a>
                         <div class="commodity-content">
                             <p class="comd-title van-multi-ellipsis--l2">
