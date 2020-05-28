@@ -160,7 +160,20 @@
                 }
 
                 let title = commodity.title;
-                let url = "https:" + commodity.coupon_share_url;
+                let url = "https:";
+
+                if (commodity.coupon_share_url) {
+                    url += commodity.coupon_share_url;
+                } else {
+                    if (commodity.url) {
+                        url += commodity.url;
+                    } else if (commodity.item_url) {
+                        url += commodity.item_url;
+                    } else {
+                        vant.Toast.success('获取商品链接失败');
+                        return;
+                    }
+                }
 
                 axios.post('/get-share-key', {
                     title: title,
@@ -168,8 +181,11 @@
                 }).then(function (resp) {
                     if (resp.data.code == 200) {
                         let key = resp.data.data.result.model;
-                        th.shareKey = title + "\n【在售价】" + parsePrice(commodity.zk_final_price) + "元\n【券后价】"
-                            + commodity.use_coupon + "元\n-----------------\n" +
+                        th.shareKey = title + "\n【在售价】" + parsePrice(commodity.zk_final_price) + "元\n";
+                        if (commodity.use_coupon) {
+                            th.shareKey += "【券后价】" + commodity.use_coupon + "元\n";
+                        }
+                        th.shareKey += "-----------------\n" +
                             "注意，请完整复制这条信息，" + key + "，到【手机淘宝】即可查看";
                         document.getElementById("copy").click();
                     } else {

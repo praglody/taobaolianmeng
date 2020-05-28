@@ -48,6 +48,12 @@
                                         target="_blank" class="get-coupon" size="mini">
                                 <span>领券</span>
                             </van-button>
+                            <van-button type="default" tag="a" v-else
+                                        :item-id="item.item_id"
+                                        @click="copyShareKey"
+                                        target="_blank" class="purchase" size="mini">
+                                <span>购买</span>
+                            </van-button>
                         </div>
                     </div>
                     <van-divider/>
@@ -81,6 +87,12 @@
                                         @click="copyShareKey"
                                         target="_blank" class="get-coupon" size="mini">
                                 <span>领券</span>
+                            </van-button>
+                            <van-button type="default" tag="a" v-else
+                                        :item-id="item.item_id"
+                                        @click="copyShareKey"
+                                        target="_blank" class="purchase" size="mini">
+                                <span>购买</span>
                             </van-button>
                         </div>
                     </div>
