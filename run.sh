@@ -8,7 +8,7 @@ start(){
   if [ "x$pid" != "x" ]; then
     kill $pid
   fi
-  nohup $CurDir/tbaoke >& /dev/null &
+  nohup $CurDir/tbaoke >> $CurDir/logs/access.log 2>&1 &
 }
 
 stop(){

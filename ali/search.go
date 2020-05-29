@@ -145,6 +145,7 @@ func GetShareKey(shareTitle, shareUrl string) (interface{}, error) {
 		return nil, errors.New("param error")
 	}
 
+	shareTitle = strings.ReplaceAll(shareTitle, "+", "加")
 	p := map[string]string{
 		"url":  shareUrl,
 		"text": shareTitle,
