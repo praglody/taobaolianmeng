@@ -163,5 +163,11 @@ func main() {
 		ctx.Write(b)
 	})
 
+	app.Post("/report-error", func(ctx iris.Context) {
+		ali.ErrorHandle(ctx)
+		retMsg := map[string]int{"code": 200}
+		ctx.JSON(retMsg)
+	})
+
 	app.Run(iris.Addr(fmt.Sprintf(":%d", ali.HttpPort)))
 }

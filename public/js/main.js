@@ -189,11 +189,11 @@
                             "注意，请完整复制这条信息，" + key + "，到【手机淘宝】即可查看";
                         document.getElementById("copy").click();
                     } else {
-                        vant.Toast.success('领取失败');
+                        vant.Toast.success('获取淘口令失败');
                     }
                 }).catch(function (err) {
                     console.log(err)
-                    vant.Toast.success('领取失败');
+                    vant.Toast.success('服务器错误');
                 });
             }
         }
@@ -212,6 +212,13 @@
     });
 
     clipboard.on('error', function (e) {
-        vant.Toast.success('领取失败');
+        vant.Toast.success('您的手机不支持自动领取，请手动复制淘口令');
+        axios.post('/report-error', {
+            code: 10060,
+            msg: "用户设备不支持复制"
+        }).then(function (resp) {
+        }).catch(function (err) {
+            console.log(err)
+        });
     });
 })();
