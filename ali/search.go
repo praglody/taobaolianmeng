@@ -145,7 +145,9 @@ func GetShareKey(shareTitle, shareUrl string) (interface{}, error) {
 		return nil, errors.New("param error")
 	}
 
-	shareTitle = strings.ReplaceAll(shareTitle, "+", "加")
+	shareTitle = strings.ReplaceAll(shareTitle, "【", "[")
+	shareTitle = strings.ReplaceAll(shareTitle, "】", "]")
+	fmt.Println(shareTitle)
 	p := map[string]string{
 		"url":  shareUrl,
 		"text": shareTitle,
@@ -173,14 +175,14 @@ ShareKeyRequest:
 	}
 	ret = gjson.GetBytes(body, "error_response")
 	errMsg := ret.Value().(map[string]interface{})
-	if errMsg["sub_code"].(string) == "1" && retry < 2 {
+	if errMsg["code"].(int) == 15 && errMsg["sub_code"].(string) == "1" && retry < 2 {
 		// 服务器错误，重试
 		retry++
 		time.Sleep(time.Millisecond * 500)
 		goto ShareKeyRequest
 	}
 
-	return nil, errors.New(errMsg["sub_msg"].(string))
+	return nil, errors.New(errMsg["msg"].(string))
 }
 
 func GetRecommendList(page, pageSize string) (interface{}, error) {
