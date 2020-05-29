@@ -21,6 +21,7 @@
                 recommendLoading: false,
                 recommendFinished: false,
                 shareKey: "",
+                shareUrl: "",
             }
         },
         methods: {
@@ -175,6 +176,7 @@
                     }
                 }
 
+                th.shareUrl = url;
                 axios.post('/get-share-key', {
                     title: title,
                     url: url
@@ -194,7 +196,8 @@
                     }
                 }).catch(function (err) {
                     console.log(err)
-                    vant.Toast.success('服务器错误');
+                    //vant.Toast.success('服务器错误');
+                    window.open(th.shareUrl,"_blank");
                 });
             }
         }
@@ -213,7 +216,7 @@
     });
 
     clipboard.on('error', function (e) {
-        vant.Toast.success('您的手机不支持自动领取，请手动复制淘口令');
+        //vant.Toast.success('您的手机不支持自动领取，请手动复制淘口令');
         axios.post('/report-error', {
             code: 10060,
             msg: "用户设备不支持复制"
@@ -221,5 +224,6 @@
         }).catch(function (err) {
             console.log(err)
         });
+        window.open(th.shareUrl,"_blank");
     });
 })();
