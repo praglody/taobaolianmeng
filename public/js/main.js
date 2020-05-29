@@ -189,7 +189,8 @@
                             "注意，请完整复制这条信息，" + key + "，到【手机淘宝】即可查看";
                         document.getElementById("copy").click();
                     } else {
-                        vant.Toast.success('获取淘口令失败');
+                        //vant.Toast.success('获取淘口令失败');
+                        window.open(url,"_blank");
                     }
                 }).catch(function (err) {
                     console.log(err)
