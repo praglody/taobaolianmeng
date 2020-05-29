@@ -183,9 +183,11 @@
                 }).then(function (resp) {
                     if (resp.data.code == 200) {
                         let key = resp.data.data.result.model;
-                        th.shareKey = title + "\n【在售价】" + parsePrice(commodity.zk_final_price) + "元\n";
                         if (commodity.use_coupon) {
+                            th.shareKey = title + "\n【在售价】" + parsePrice(commodity.zk_final_price) + "元\n";
                             th.shareKey += "【券后价】" + commodity.use_coupon + "元\n";
+                        } else {
+                            th.shareKey = title + "\n【折扣价】" + parsePrice(commodity.zk_final_price) + "元\n";
                         }
                         th.shareKey += "-----------------\n" +
                             "注意，请完整复制这条信息，" + key + "，到【手机淘宝】即可查看";
