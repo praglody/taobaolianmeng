@@ -233,13 +233,13 @@
                 }
 
                 let images = [];
+                images.push(commodity.pict_url);
                 if (commodity.small_images != undefined && commodity.small_images.string.length > 0) {
-                    images = commodity.small_images.string;
+                    images.concat(commodity.small_images.string);
                 }
                 if (commodity.white_image != undefined && commodity.white_image) {
                     images.push(commodity.white_image);
                 }
-                images.push(commodity.pict_url);
 
                 vant.ImagePreview({
                     images: images,
