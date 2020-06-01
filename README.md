@@ -7,6 +7,7 @@
 - 商品图预览
 - 支持一键复制带优惠券的淘口令
 
+试用地址：[http://shopping.wibliss.com](http://shopping.wibliss.com)
 
 # Install
 
