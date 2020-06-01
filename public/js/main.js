@@ -126,6 +126,10 @@
                                 data[i].use_coupon = parsePrice(data[i].zk_final_price - data[i].coupon_amount);
                             }
                             data[i].item_url = data[i].click_url;
+                            if (data[i].shop_title == undefined || data[i].shop_title == "") {
+                                data[i].shop_title = data[i].nick;
+                            }
+                            data[i].item_url = data[i].click_url;
                         }
                         th.recommendItems = th.recommendItems.concat(data);
 
@@ -146,16 +150,17 @@
             copyShareKey: function (e) {
                 let th = this;
                 let itemId = e.target.getAttribute("item-id");
-
-                for (let i in app.items) {
-                    if (app.items[i].item_id == itemId) {
-                        commodity = app.items[i];
-                    }
-                }
+                let commodity = {};
 
                 for (let i in app.recommendItems) {
                     if (app.recommendItems[i].item_id == itemId) {
                         commodity = app.recommendItems[i];
+                    }
+                }
+
+                for (let i in app.items) {
+                    if (app.items[i].item_id == itemId) {
+                        commodity = app.items[i];
                     }
                 }
 
@@ -203,6 +208,39 @@
                     console.log(err)
                     //vant.Toast.success('服务器错误');
                     window.open(th.shareUrl,"_blank");
+                });
+            },
+            viewCommodity: function(e) {
+                let th = this;
+                let itemId = e.target.getAttribute("item-id");
+                let commodity = {};
+
+                for (let i in app.recommendItems) {
+                    if (app.recommendItems[i].item_id == itemId) {
+                        commodity = app.recommendItems[i];
+                    }
+                }
+
+                for (let i in app.items) {
+                    if (app.items[i].item_id == itemId) {
+                        commodity = app.items[i];
+                    }
+                }
+
+                if (commodity.item_id == undefined || commodity.item_id == null) {
+                    return;
+                }
+
+                let images = [];
+                if (commodity.small_images.string.length > 0) {
+                    images = commodity.small_images.string;
+                }
+                images = images.concat(commodity.pict_url);
+
+                vant.ImagePreview({
+                    images: images,
+                    closeable: true,
+                    closeOnPopstate: true
                 });
             }
         }
