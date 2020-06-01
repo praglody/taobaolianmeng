@@ -131,6 +131,24 @@ a, a:hover {
     width: 120px;
 }
 
+.copy-coupon {
+    padding: 0 15px;
+    left: 15px;
+    right: 15px;
+    -webkit-transform: translate3d(0,-50%,0);
+    transform: translate3d(0,-50%,0);
+    background: none;
+}
+
+.copy-coupon .share-key {
+    background: #fff;
+}
+
+.copy-coupon .copy-tips {
+    color: #fff;
+    text-align: center;
+}
+
 [v-cloak] {
     display: none;
 }

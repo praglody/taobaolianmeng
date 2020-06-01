@@ -23,6 +23,7 @@
                 recommendFinished: false,
                 shareKey: "",
                 shareUrl: "",
+                isShowCopyCoupon: false
             }
         },
         methods: {
@@ -267,6 +268,15 @@
         }).catch(function (err) {
             console.log(err)
         });
-        window.open(th.shareUrl,"_blank");
+        // window.open(th.shareUrl,"_blank");
+        app.isShowCopyCoupon = true;
+        let sel = setInterval(function(){
+            let el = document.getElementById("copy_coupon_text");
+            if (el != null) {
+                el.focus();
+                el.select();
+                clearInterval(el);
+            }
+        },100);
     });
 })();
