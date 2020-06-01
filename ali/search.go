@@ -182,7 +182,7 @@ ShareKeyRequest:
 	return nil, errors.New(errMsg["msg"].(string))
 }
 
-func GetRecommendList(page, pageSize string) (interface{}, error) {
+func GetRecommendList(page, pageSize, materialId string) (interface{}, error) {
 	retry := 0
 	if pageSize == "" {
 		pageSize = "30"
@@ -192,7 +192,7 @@ func GetRecommendList(page, pageSize string) (interface{}, error) {
 	}
 	p := map[string]string{
 		"adzone_id":   "110280650043",
-		"material_id": "13366",
+		"material_id": materialId,
 		"page_no":     page,
 		"page_size":   pageSize,
 	}
@@ -218,7 +218,7 @@ RecommendListRequest:
 		goto RecommendListRequest
 	}
 
-	return map[string]string{}, nil
+	return []map[string]string{}, nil
 }
 
 func GetTaoBaoServerTime() (string, error) {

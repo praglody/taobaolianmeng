@@ -17,6 +17,7 @@
                 page: 1,
                 recommend: true,
                 recommendPage: 1,
+                materialId: "",
                 recommendItems: [],
                 recommendLoading: false,
                 recommendFinished: false,
@@ -101,6 +102,7 @@
                 axios.get('/recommend', {
                     params: {
                         page: th.recommendPage,
+                        material_id: th.materialId,
                         page_size: 20
                     }
                 }).then(function (resp) {
@@ -112,6 +114,7 @@
                             return;
                         }
 
+                        th.materialId = resp.data.data.material_id;
                         th.recommendPage++;
                         for (let i in data) {
                             data[i].zk_final_price = parsePrice(data[i].zk_final_price);

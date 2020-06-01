@@ -7,8 +7,10 @@ import (
 	"github.com/kataras/iris/v12/middleware/logger"
 	"github.com/kataras/iris/v12/middleware/recover"
 	"io/ioutil"
+	"math/rand"
 	"os"
 	"taobaolianmeng/ali"
+	"time"
 )
 
 func main() {
@@ -100,8 +102,17 @@ func main() {
 	app.Get("/recommend", func(ctx iris.Context) {
 		code := 200
 		page := ctx.URLParam("page")
+		materialId := ctx.URLParam("material_id")
 		pageSize := ctx.URLParam("page_size")
-		resp, err := ali.GetRecommendList(page, pageSize)
+
+		if materialId == "" {
+			materialIds := []string{"13366", "32366", "27160", "3756", "28026", "28027", "30443", "27446", "27451", "13375", "3786", "3791"}
+			rand.Seed(time.Now().UnixNano())
+			n := rand.Intn(len(materialIds) - 1)
+			materialId = materialIds[n]
+		}
+
+		resp, err := ali.GetRecommendList(page, pageSize, materialId)
 		ctx.Header("Content-Type", "application/json; charset=utf-8")
 		if err != nil {
 			code = 10005
@@ -111,7 +122,8 @@ func main() {
 		retMsg := map[string]interface{}{
 			"code": code,
 			"data": map[string]interface{}{
-				"result": resp,
+				"result":      resp,
+				"material_id": materialId,
 			},
 		}
 		var json = jsoniter.ConfigCompatibleWithStandardLibrary
