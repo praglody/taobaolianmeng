@@ -108,11 +108,11 @@ a, a:hover {
     right: 0;
     left: 0;
     top: 92px;
-    margin: 0;
+    margin: 5px 0 0 0;
     font-size: 12px;
     line-height: 18px;
-    color: #2bbece;
-    padding-left: 16px;
+    color: #848484;
+    padding-left: 18px;
 }
 
 .commodity-content-extra .comd-shop .shop-icon {
@@ -127,7 +127,7 @@ a, a:hover {
 
 .commodity-content-extra .comd-shop .shop-volume {
     position: absolute;
-    right: 0;
+    left: 160px;
     width: 120px;
 }
 
