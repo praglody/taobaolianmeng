@@ -8,6 +8,9 @@ start(){
   if [ "x$pid" != "x" ]; then
     kill $pid
   fi
+  timestamp=$(date +%s)
+  sh -c "sed -i 's/main\.js.*\"/main.js?${timestamp}\"/' public/index.html"
+  sh -c "sed -i 's/main\.css.*\"/main.css?${timestamp}\"/' public/index.html"
   nohup $CurDir/tbaoke >> $CurDir/logs/access.log 2>&1 &
 }
 
