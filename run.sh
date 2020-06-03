@@ -3,6 +3,12 @@ set -e
 
 CurDir=$(cd $(dirname $0);pwd)
 
+isMacOS=$(uname -a|grep -i Darwin|wc -l)
+if [ $isMacOS -gt 0 ]; then
+    echo "MacOS 请手动启动"
+    exit 1
+fi
+
 start(){
   pid=$(ps -ef | grep '\/tbaoke' | grep -v grep | awk '{print $2}')
   if [ "x$pid" != "x" ]; then
@@ -22,7 +28,7 @@ stop(){
 }
 
 case "$1" in
-    start)
+    start|restart)
         start
         echo "started"
     ;;
@@ -30,4 +36,6 @@ case "$1" in
         stop
         echo "stopped"
     ;;
+    *)
+        echo "usage: ./run.sh {start|restart|stop}"
 esac
