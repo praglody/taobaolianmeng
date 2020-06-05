@@ -17,6 +17,7 @@ require (
 	github.com/onsi/gomega v1.10.0 // indirect
 	github.com/sergi/go-diff v1.1.0 // indirect
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
+	github.com/skip2/go-qrcode v0.0.0-20200526175731-7ac0b40b2038
 	github.com/smartystreets/goconvey v1.6.4 // indirect
 	github.com/tidwall/gjson v1.6.0
 	github.com/tidwall/pretty v1.0.1 // indirect

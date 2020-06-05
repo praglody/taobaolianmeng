@@ -5,7 +5,7 @@ import (
 	"github.com/kataras/iris/v12"
 )
 
-const ERROR_CLIENT_COPY = 10060
+const ErrorClientCopy = 10060
 
 type errMsg struct {
 	Code int    `json:"code"`
@@ -19,7 +19,7 @@ func ErrorHandle(ctx iris.Context) {
 	}
 
 	switch body.Code {
-	case ERROR_CLIENT_COPY:
+	case ErrorClientCopy:
 		fmt.Printf("%s: %s User-Agent:%s\n", ctx.RemoteAddr(), body.Msg, ctx.GetHeader("user-agent"))
 	default:
 		fmt.Println("unknown error")

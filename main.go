@@ -20,6 +20,7 @@ func main() {
 
 	app.HandleDir("/js", "./public/js")
 	app.HandleDir("/css", "./public/css")
+	app.HandleDir("/pic", "./runtime/pic")
 	app.Get("/", func(ctx iris.Context) {
 		indexPage, _ := os.Open("./public/index.html")
 		s, _ := ioutil.ReadAll(indexPage)
@@ -179,6 +180,33 @@ func main() {
 		ali.ErrorHandle(ctx)
 		retMsg := map[string]int{"code": 200}
 		ctx.JSON(retMsg)
+	})
+
+	app.Post("/get-fission-url", func(ctx iris.Context) {
+		ctx.Header("Content-Type", "application/json; charset=utf-8")
+		retMsg := map[string]interface{}{
+			"code": 200,
+		}
+
+		var share ali.FissionParam
+		err := ctx.ReadJSON(&share)
+		if err != nil {
+			retMsg["code"] = 10005
+			retMsg["errMsg"] = err.Error()
+			_, _ = ctx.JSON(retMsg)
+			return
+		}
+
+		url, err := ali.GetFissionUrl(share)
+		if err != nil {
+			retMsg["code"] = 10005
+			retMsg["errMsg"] = err.Error()
+			_, _ = ctx.JSON(retMsg)
+			return
+		}
+
+		retMsg["data"] = map[string]string{"url": url}
+		_, _ = ctx.JSON(retMsg)
 	})
 
 	app.Run(iris.Addr(fmt.Sprintf(":%d", ali.HttpPort)))
