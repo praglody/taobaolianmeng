@@ -16,6 +16,7 @@ type FissionParam struct {
 	Cover  string `json:"cover"`
 }
 
+// 生成分享图，返回分享图URL
 func GetFissionUrl(fission FissionParam) (string, error) {
 	uniqKey := fmt.Sprintf("%X", md5.Sum([]byte(fission.Title+fission.Cover+fission.TaoKey)))
 	fileName := fmt.Sprintf("/pic/%s/%s.png", time.Now().Format("2006-01-02"), uniqKey)
@@ -51,6 +52,7 @@ func GetFissionUrl(fission FissionParam) (string, error) {
 	return fileName, nil
 }
 
+// 生成商品二维码
 func getFissionQrCode(shareKey string) ([]byte, error) {
 	var png []byte
 	png, err := QrCode.Encode(shareKey, QrCode.Medium, 256)

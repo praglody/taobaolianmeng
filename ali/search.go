@@ -221,6 +221,21 @@ RecommendListRequest:
 	return []map[string]string{}, nil
 }
 
+// 淘宝长链转短链（目前没有权限调用）
+func GetSpreadUrl(clickUrl string) ([]byte, error) {
+	p := map[string]string{
+		"requests": clickUrl,
+	}
+
+	body, err := SendRequest("taobao.tbk.spread.get", p)
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println(string(body))
+	return nil, nil
+}
+
+// 获取服务器时间
 func GetTaoBaoServerTime() (string, error) {
 	p := map[string]string{}
 	body, err := SendRequest("taobao.time.get", p)
