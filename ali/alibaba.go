@@ -18,6 +18,7 @@ import (
 var appkey = ""
 var secret = ""
 var HttpPort = 8080
+var adZoneId = ""
 var cache *bigcache.BigCache
 var Debug = false
 
@@ -48,6 +49,10 @@ func init() {
 		log.Fatalln("config secret is empty")
 	}
 
+	if confMap["adzone_id"] == nil || confMap["adzone_id"] == "" {
+		log.Fatalln("config adzone_id is empty")
+	}
+
 	if confMap["http_port"] != nil {
 		HttpPort = confMap["http_port"].(int)
 	}
@@ -58,6 +63,7 @@ func init() {
 
 	appkey = fmt.Sprintf("%s", confMap["appkey"])
 	secret = fmt.Sprintf("%s", confMap["secret"])
+	adZoneId = fmt.Sprintf("%s", confMap["adzone_id"])
 
 	cache, _ = bigcache.NewBigCache(bigcache.DefaultConfig(60 * time.Minute))
 }

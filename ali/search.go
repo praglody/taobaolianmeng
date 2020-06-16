@@ -48,7 +48,7 @@ func SearchTaobaoShop(q string, page string, ip string) ([]interface{}, error) {
 		"q":           q,
 		"page_no":     page,
 		"page_size":   "15",
-		"adzone_id":   "110280650043",
+		"adzone_id":   adZoneId,
 		"material_id": "17004",
 		"ip":          ip,
 	}
@@ -191,7 +191,7 @@ func GetRecommendList(page, pageSize, materialId string) (interface{}, error) {
 		page = "1"
 	}
 	p := map[string]string{
-		"adzone_id":   "110280650043",
+		"adzone_id":   adZoneId,
 		"material_id": materialId,
 		"page_no":     page,
 		"page_size":   pageSize,

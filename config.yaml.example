@@ -1,4 +1,6 @@
 appkey: ""
 secret: ""
-debug: false
 http_port: 8080
+adzone_id:
+debug: false
+
