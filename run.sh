@@ -10,7 +10,7 @@ if [ $isMacOS -gt 0 ]; then
 fi
 
 start(){
-  pid=$(ps -ef | grep '\/tbaoke' | grep -v grep | awk '{print $2}')
+  pid=$(ps -ef | grep "$CurDir/tbaoke" | grep -v grep | awk '{print $2}')
   if [ "x$pid" != "x" ]; then
     kill $pid
   fi
@@ -21,7 +21,7 @@ start(){
 }
 
 stop(){
-  pid=$(ps -ef | grep '\/tbaoke' | grep -v grep | awk '{print $2}')
+  pid=$(ps -ef | grep "$CurDir/tbaoke" | grep -v grep | awk '{print $2}')
   if [ "x$pid" != "x" ]; then
     kill $pid
   fi
@@ -39,3 +39,4 @@ case "$1" in
     *)
         echo "usage: ./run.sh {start|restart|stop}"
 esac
+
